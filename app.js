@@ -4,8 +4,17 @@ const list = document.getElementById('list')
 const template = document.getElementById('list-item-template')
 const LOCAL_STORAGE_PREFIX = 'ADVANCED_TODO_LIST'
 const TODOS_LOCAL_STORAGE = `${LOCAL_STORAGE_PREFIX}-todos`
-const todos = loadTodos()
+let todos = loadTodos()
 todos.forEach(renderTodos)
+
+list.addEventListener('click', (e) => {
+  if (!e.target.matches('[data-button-delete]')) return
+  const parent = e.target.closest('.list-item')
+  const id = parent.dataset.todoId
+  todos = todos.filter((t) => t.id !== id)
+  saveTodos()
+  list.removeChild(parent)
+})
 
 list.addEventListener('change', (e) => {
   if (!e.target.matches('[data-list-item-checkbox]')) return

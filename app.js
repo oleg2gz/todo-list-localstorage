@@ -7,21 +7,39 @@ const TODOS_LOCAL_STORAGE = `${LOCAL_STORAGE_PREFIX}-todos`
 const todos = loadTodos()
 todos.forEach(renderTodos)
 
+list.addEventListener('click', (e) => {
+  if (!e.target.matches('[data-list-item-checkbox]')) return
+  const parent = e.target.closest('.list-item')
+  const id = parent.dataset.todoId
+  const todo = todos.find((t) => t.id === id)
+  todo.complete = e.target.checked
+  saveTodos()
+})
+
 form.addEventListener('submit', (e) => {
   e.preventDefault()
 
   const todoContent = input.value
   if (todoContent === '') return
-  todos.push(todoContent)
+  const todo = {
+    text: todoContent,
+    complete: false,
+    id: new Date().valueOf().toString(),
+  }
+  todos.push(todo)
   saveTodos()
-  renderTodos(todoContent)
+  renderTodos(todo)
   input.value = ''
 })
 
 function renderTodos(todo) {
   const templateClone = template.content.cloneNode(true)
   const textElement = templateClone.querySelector('[data-list-item-text]')
-  textElement.innerText = todo
+  textElement.innerText = todo.text
+  const checkbox = templateClone.querySelector('[data-list-item-checkbox]')
+  checkbox.checked = todo.complete
+  const listItem = templateClone.querySelector('.list-item')
+  listItem.dataset.todoId = todo.id
   list.appendChild(templateClone)
 }
 

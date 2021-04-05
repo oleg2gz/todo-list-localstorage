@@ -4,7 +4,8 @@ const list = document.getElementById('list')
 const template = document.getElementById('list-item-template')
 const LOCAL_STORAGE_PREFIX = 'ADVANCED_TODO_LIST'
 const TODOS_LOCAL_STORAGE = `${LOCAL_STORAGE_PREFIX}-todos`
-const todos = []
+const todos = loadTodos()
+todos.forEach(renderTodos)
 
 form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -26,4 +27,9 @@ function renderTodos(todo) {
 
 function saveTodos() {
   localStorage.setItem(TODOS_LOCAL_STORAGE, JSON.stringify(todos))
+}
+
+function loadTodos() {
+  const todosString = localStorage.getItem(TODOS_LOCAL_STORAGE)
+  return JSON.parse(todosString) || []
 }

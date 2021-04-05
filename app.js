@@ -7,7 +7,7 @@ const TODOS_LOCAL_STORAGE = `${LOCAL_STORAGE_PREFIX}-todos`
 const todos = loadTodos()
 todos.forEach(renderTodos)
 
-list.addEventListener('click', (e) => {
+list.addEventListener('change', (e) => {
   if (!e.target.matches('[data-list-item-checkbox]')) return
   const parent = e.target.closest('.list-item')
   const id = parent.dataset.todoId
